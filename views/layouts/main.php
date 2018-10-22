@@ -41,9 +41,10 @@ AppAsset::register($this);
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
+            ['label'=>'Пользователи','url'=>['site/users'],'visible'=>!Yii::$app->user->isGuest && Yii::$app->user->identity->username=='admin'],
+            ['label' => 'Вход', 'url' => ['/site/login'],'visible'=>Yii::$app->user->isGuest],
+            ['label' => 'Регистрация', 'url' => ['/site/register'],'visible'=>Yii::$app->user->isGuest],
+            Yii::$app->user->isGuest ? '' : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(

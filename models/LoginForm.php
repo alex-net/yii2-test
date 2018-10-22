@@ -15,7 +15,7 @@ class LoginForm extends Model
 {
     public $username;
     public $password;
-    public $rememberMe = true;
+    //public $rememberMe = true;
 
     private $_user = false;
 
@@ -29,12 +29,23 @@ class LoginForm extends Model
             // username and password are both required
             [['username', 'password'], 'required'],
             // rememberMe must be a boolean value
-            ['rememberMe', 'boolean'],
+            //['rememberMe', 'boolean'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
         ];
     }
 
+
+    /**
+        переименвваем поля ... 
+    */
+    public function attributeLabels()
+    {
+        return [
+           'username'=>'Имя пользователя',
+           'password'=>'Пароль', 
+        ];
+    }
     /**
      * Validates the password.
      * This method serves as the inline validation for password.
@@ -60,7 +71,7 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+            return Yii::$app->user->login($this->getUser());
         }
         return false;
     }
@@ -72,10 +83,9 @@ class LoginForm extends Model
      */
     public function getUser()
     {
-        if ($this->_user === false) {
+        if ($this->_user === false) 
             $this->_user = User::findByUsername($this->username);
-        }
-
+        
         return $this->_user;
     }
 }

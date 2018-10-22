@@ -7,14 +7,15 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use rmrevin\yii\ulogin\ULogin;
+//rmrevin\yii\ulogin\ULogin
 
-$this->title = 'Вход';
+$this->title = 'Регистрация';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-login">
+<div class="site-registr">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Пожалуйста, заполните поля для входа:</p>
+    <p>Пожалуйста, заполните поля для регистрации:</p>
 
     <?php $form = ActiveForm::begin([
         'id' => 'login-form',
@@ -27,26 +28,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
-        <?= $form->field($model, 'password')->passwordInput() ?>
+        <?= $form->field($model, 'pass')->passwordInput() ?>
+        <?= $form->field($model, 'pass_repeat')->passwordInput() ?>
 
-        <?php /* = $form->field($model, 'rememberMe')->checkbox([
-            'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
-        ]) */?>
 
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">
-                <?= Html::submitButton('Войти', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                <?= Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-primary', 'name' => 'register-button']) ?>
             </div>
         </div>
 
     <?php ActiveForm::end(); ?>
 
     <?=Ulogin::widget([
-        'display'=>Ulogin::D_SMALL,
-        'fields'=>[Ulogin::F_NICKNAME],
-        'providers'=>[Ulogin::P_GOOGLE],
-        'redirectUri'=>['site/ulogin','type'=>'login'],
-        'hidden'=>[],
-        'language' => ULogin::L_RU,
-        ]);?>
+    	'display'=>Ulogin::D_SMALL,
+    	'fields'=>[Ulogin::F_NICKNAME],
+    	'providers'=>[Ulogin::P_GOOGLE],
+    	'redirectUri'=>['site/ulogin','type'=>'register'],
+    	'hidden'=>[],
+    	'language' => ULogin::L_RU,
+    	]);?>
+
+    
 </div>

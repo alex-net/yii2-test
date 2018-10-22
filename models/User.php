@@ -2,30 +2,50 @@
 
 namespace app\models;
 
-class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
+use Yii;
+
+class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
-    public $id;
+    /*public $id;
     public $username;
     public $password;
     public $authKey;
     public $accessToken;
+    */
 
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
+    public function beforeSave($ins)
+    {
+        if (!parent::beforeSave($ins))
+            return false;
+        // новая запись = надо сгенерить ключ 
+        if ($this->isNewRecord)
+            $this->authKey=Yii::$app->security->generateRandomString(15);
+        // если пароль не пустой .. надо его захешить ... 
+        if ($this->password)
+            //$this->isNewRecord
+            if ($this->isNewRecord || !$this->isNewRecord && !empty($this->oldAttributes['password']) && $this->oldAttributes['password']!=$this->password)
+            $this->password=Yii::$app->security->generatePasswordHash($this->password);
+
+        return true;
+    }
+   
+    // регистрация юзера из соцсети ..
+    static function UloginRegister($name)
+    {
+        // проверка наличия юзера  в  базе . 
+        if (self::find()->where(['username'=>$name,'fromulogin'=>1])->count())
+            return false;
+
+        $u= new self();
+        $u->username=$name;
+        $u->fromulogin=1;
+        $u->save();
+
+        // логиним сразу .. 
+        return $u;
+        ///$u->
+
+    }
 
 
     /**
@@ -33,7 +53,9 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        Yii::info($id,'user id');
+        return self::find()->where(['id'=>$id])->limit(1)->one();
+        //return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
     }
 
     /**
@@ -41,11 +63,6 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
 
         return null;
     }
@@ -58,13 +75,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return self::find()->where(['username'=>$username])->limit(1)->one();
     }
 
     /**
@@ -99,6 +110,6 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return $this->password && Yii::$app->security->validatePassword($password,$this->password);
     }
 }
