@@ -42,8 +42,8 @@ class LoginForm extends Model
     public function attributeLabels()
     {
         return [
-           'username'=>'Имя пользователя',
-           'password'=>'Пароль', 
+           'username' => 'Имя пользователя',
+           'password' => 'Пароль', 
         ];
     }
     /**
@@ -83,8 +83,9 @@ class LoginForm extends Model
      */
     public function getUser()
     {
-        if ($this->_user === false) 
+        if ($this->_user === false) {
             $this->_user = User::findByUsername($this->username);
+        }
         
         return $this->_user;
     }

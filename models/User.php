@@ -15,16 +15,20 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     public function beforeSave($ins)
     {
-        if (!parent::beforeSave($ins))
+        if (!parent::beforeSave($ins)) {
             return false;
+        }
         // новая запись = надо сгенерить ключ 
-        if ($this->isNewRecord)
-            $this->authKey=Yii::$app->security->generateRandomString(15);
+        if ($this->isNewRecord) {
+            $this->authKey = Yii::$app->security->generateRandomString(15);
+        }
         // если пароль не пустой .. надо его захешить ... 
-        if ($this->password)
+        if ($this->password) {
             //$this->isNewRecord
-            if ($this->isNewRecord || !$this->isNewRecord && !empty($this->oldAttributes['password']) && $this->oldAttributes['password']!=$this->password)
-            $this->password=Yii::$app->security->generatePasswordHash($this->password);
+            if ($this->isNewRecord || !$this->isNewRecord && !empty($this->oldAttributes['password']) && $this->oldAttributes['password'] != $this->password) {
+                $this->password = Yii::$app->security->generatePasswordHash($this->password);
+            }
+        }
 
         return true;
     }
@@ -33,12 +37,13 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     static function UloginRegister($name)
     {
         // проверка наличия юзера  в  базе . 
-        if (self::find()->where(['username'=>$name,'fromulogin'=>1])->count())
+        if (self::find()->where(['username' => $name, 'fromulogin' => 1])->count()) {
             return false;
+        }
 
-        $u= new self();
-        $u->username=$name;
-        $u->fromulogin=1;
+        $u = new self();
+        $u->username = $name;
+        $u->fromulogin = 1;
         $u->save();
 
         // логиним сразу .. 
@@ -53,8 +58,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findIdentity($id)
     {
-        Yii::info($id,'user id');
-        return self::find()->where(['id'=>$id])->limit(1)->one();
+        return self::find()->where(['id' => $id])->limit(1)->one();
         //return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
     }
 
@@ -75,7 +79,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return self::find()->where(['username'=>$username])->limit(1)->one();
+        return self::find()->where(['username' => $username])->limit(1)->one();
     }
 
     /**

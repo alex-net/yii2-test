@@ -40,14 +40,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php ActiveForm::end(); ?>
 
-    <?=Ulogin::widget([
-    	'display'=>Ulogin::D_SMALL,
-    	'fields'=>[Ulogin::F_NICKNAME],
-    	'providers'=>[Ulogin::P_GOOGLE],
-    	'redirectUri'=>['site/ulogin','type'=>'register'],
-    	'hidden'=>[],
-    	'language' => ULogin::L_RU,
-    	]);?>
+    <?= Ulogin::widget([
+        'display' => Ulogin::D_SMALL,
+        'fields' => [Ulogin::F_NICKNAME],
+        'providers' => [Ulogin::P_GOOGLE],
+        'redirectUri' => ['site/ulogin', 'type' => 'register'],
+        'hidden' => [],
+        'language' => ULogin::L_RU,
+        ]); ?>
 
     
 </div>

@@ -6,13 +6,13 @@ use yii\base\Model;
 
 class TestModel extends Model
 {
-	public $testfield;
-	public function rules()
-	{
-		return [
-			['testfield','required'],
-		];
-	}
+    public $testfield;
+    public function rules()
+    {
+        return [
+            ['testfield', 'required'],
+        ];
+    }
 
 }
-?>
+

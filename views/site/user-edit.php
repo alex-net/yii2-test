@@ -7,8 +7,8 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Редактирование пользователя '.$model->name;
-$this->params['breadcrumbs'][]=['label'=>'Пользователи','url'=>['site/users']];
+$this->title = 'Редактирование пользователя ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Пользователи', 'url' => ['site/users']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">
@@ -29,16 +29,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= $form->field($model, 'pass')->passwordInput(['placeholder'=>'для сохранения пароля - оставить пустым']) ?>
 
-
-
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">
-            	<?php if (!$model->_user->fromulogin):?>
-                	<?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary', 'name' => 'save-button']) ?>
+                <?php if (!$model->_user->fromulogin): ?>
+                    <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary', 'name' => 'save-button']) ?>
                 <?php endif;?>
-                <?php if ($model->_user->username!=='admin'):?>
-                	<?= Html::submitButton('Удалить', ['class' => 'btn btn-danger', 'name' => 'kill-button']) ?>
-            	<?php endif;?>
+                <?php if ($model->_user->username!=='admin'): ?>
+                    <?= Html::submitButton('Удалить', ['class' => 'btn btn-danger', 'name' => 'kill-button']) ?>
+                <?php endif; ?>
             </div>
         </div>
 

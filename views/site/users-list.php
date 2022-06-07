@@ -15,9 +15,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
 
- <?=GridView::widget([
- 	'dataProvider'=>$p,
- 	'columns'=>['id',['attribute'=>'username','label'=>'Логин','content'=>[\app\controllers\SiteController::className(),'userlink']]],
- 	]);?>
+ <?= GridView::widget([
+    'dataProvider' => $p,
+    'columns' => ['id', ['attribute' => 'username', 'label' => 'Логин', 'content' => [\app\controllers\SiteController::className(), 'userlink']]],
+    ]); ?>
     
 </div>
